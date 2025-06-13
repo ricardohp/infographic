@@ -1,751 +1,735 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Future of AI-Powered App Discovery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Color Palette: Google Brand Colors (Blue, Red, Yellow, Green) -->
+    <!-- Narrative Plan: Introduction/Hook -> Market Overview (Gap) -> Key Trends -> Process Flow (New Journey) -> SWOT Analysis -> Future Outlook (Strategic Imperatives) -> Sources -->
+    <!-- Visualization Choices:
+        - Introduction KPIs: Single Big Number (Text) - Goal: Inform, Library: N/A, Justification: Direct impact, easy digestion.
+        - Market Share: Bar Chart (Horizontal) - Goal: Compare, Library: Chart.js (Canvas), Justification: Compare user reliance across channels. Label wrapping applied.
+        - Conversational Adoption: Line Chart - Goal: Change, Library: Chart.js (Canvas), Justification: Show trend over time.
+        - Personalization Impact: Donut Chart - Goal: Inform/Compare, Library: Chart.js (Canvas), Justification: Show proportion of engagement lift.
+        - Value Chain: Process Flow (HTML/CSS) - Goal: Organize, Library: N/A (HTML/CSS), Justification: Visualize a step-by-step user journey. No SVG, no Mermaid JS.
+        - SWOT Analysis: Structured HTML/CSS Grid - Goal: Organize, Library: N/A (HTML/CSS), Justification: Clear categorization of factors. No SVG.
+        - Future Outlook: Radar Chart - Goal: Relationships/Compare, Library: Chart.js (Canvas), Justification: Compare current state vs. strategic goals across multiple dimensions. Label wrapping applied.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA; /* Google light grey */
+            color: #3C4043; /* Google dark grey for text */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #3C4043;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            width: 100%;
+            max-width: 600px; /* Max width to prevent charts from being too wide */
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 50vh; /* Taller on mobile for better visibility */
+            }
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .flow-step {
+            border-left: 4px solid;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 9999px;
+            background-color: currentColor;
+            border: 4px solid #F8F9FA; /* Matches body background */
+        }
+        .swot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .swot-card {
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Table specific styles for Sources section */
+        .sources-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .sources-table th, .sources-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #E8EAED; /* Google light grey border */
+        }
+        .sources-table th {
+            background-color: #F1F3F4; /* Google lighter grey */
+            font-weight: 600;
+            color: #3C4043;
+        }
+        .sources-table tbody tr:hover {
+            background-color: #E8F0FE; /* Light Google blue hover */
+        }
+        .sources-table ul {
+            list-style: disc;
+            padding-left: 1.25rem;
+        }
+        .sources-table li {
+            margin-bottom: 0.25rem;
+        }
+        .ai-output-area {
+            min-height: 80px;
+            padding: 1rem;
+            background-color: #f0f4f7;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-style: italic;
+            color: #5f6368;
+            word-wrap: break-word;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #4285F4;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-<body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Infographic: The Future of AI-Powered App Discovery&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Color Palette: Google Brand Colors (Blue, Red, Yellow, Green) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Narrative Plan: Introduction/Hook -&gt; Market Overview (Gap) -&gt; Key Trends -&gt; Process Flow (New Journey) -&gt; SWOT Analysis -&gt; Future Outlook (Strategic Imperatives) -&gt; Sources --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Visualization Choices:</p>
-<p class="p1"><span class="Apple-converted-space">        </span>- Introduction KPIs: Single Big Number (Text) - Goal: Inform, Library: N/A, Justification: Direct impact, easy digestion.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>- Market Share: Bar Chart (Horizontal) - Goal: Compare, Library: Chart.js (Canvas), Justification: Compare user reliance across channels. Label wrapping applied.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>- Conversational Adoption: Line Chart - Goal: Change, Library: Chart.js (Canvas), Justification: Show trend over time.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>- Personalization Impact: Donut Chart - Goal: Inform/Compare, Library: Chart.js (Canvas), Justification: Show proportion of engagement lift.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>- Value Chain: Process Flow (HTML/CSS) - Goal: Organize, Library: N/A (HTML/CSS), Justification: Visualize a step-by-step user journey. No SVG, no Mermaid JS.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>- SWOT Analysis: Structured HTML/CSS Grid - Goal: Organize, Library: N/A (HTML/CSS), Justification: Clear categorization of factors. No SVG.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>- Future Outlook: Radar Chart - Goal: Relationships/Compare, Library: Chart.js (Canvas), Justification: Compare current state vs. strategic goals across multiple dimensions. Label wrapping applied.</p>
-<p class="p1"><span class="Apple-converted-space">    </span>--&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #F8F9FA; /* Google light grey */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #3C4043; /* Google dark grey for text */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1, h2, h3, h4, h5, h6 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #3C4043;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chart-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 40vh;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 600px; /* Max width to prevent charts from being too wide */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.chart-container {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>height: 50vh; /* Taller on mobile for better visibility */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.kpi-card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 0.3s ease, box-shadow 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.kpi-card:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-5px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.flow-step {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.flow-step::before {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: -10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-50%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 9999px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: currentColor;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 4px solid #F8F9FA; /* Matches body background */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.swot-grid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.swot-card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.fade-in {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: fadeIn 1s ease-in-out;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes fadeIn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>from { opacity: 0; transform: translateY(20px); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>to { opacity: 1; transform: translateY(0); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Table specific styles for Sources section */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sources-table {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-collapse: collapse;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sources-table th, .sources-table td {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: left;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid #E8EAED; /* Google light grey border */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sources-table th {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #F1F3F4; /* Google lighter grey */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #3C4043;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sources-table tbody tr:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #E8F0FE; /* Light Google blue hover */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sources-table ul {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>list-style: disc;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 1.25rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sources-table li {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 0.25rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.ai-output-area {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>min-height: 80px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f0f4f7;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 0.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-style: italic;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #5f6368;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>word-wrap: break-word;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.loading-spinner {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 4px solid rgba(0, 0, 0, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left-color: #4285F4;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: spin 1s linear infinite;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes spin {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: rotate(0deg); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: rotate(360deg); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body class="bg-gray-50 text-gray-800"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container mx-auto p-4 md:p-8"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;header class="text-center py-8 md:py-12"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#EA4335] via-[#FBBC05] to-[#4285F4]"&gt;The Future of App Discovery&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"&gt;An Industry Analysis on Shifting from Keyword Search to Intelligent, Conversational, and AI-Powered Experiences&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;main class="space-y-16"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="introduction" class="fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center bg-white p-8 rounded-2xl shadow-lg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold text-gray-900 mb-2"&gt;The Discovery Dilemma&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="max-w-3xl mx-auto text-gray-600 mb-6"&gt;The mobile app landscape is more saturated than ever. While the volume of apps provides immense choice, it creates a significant challenge for users: finding the right app for their specific, nuanced needs. Traditional keyword search is no longer sufficient.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="kpi-card bg-gradient-to-br from-blue-50 to-blue-100"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="text-5xl font-extrabold text-[#4285F4]"&gt;3.8M+&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="mt-2 font-semibold text-[#4285F4]"&gt;Apps on Google Play&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="kpi-card bg-gradient-to-br from-red-50 to-red-100"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="text-5xl font-extrabold text-[#EA4335]"&gt;78%&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="mt-2 font-semibold text-[#EA4335]"&gt;Users Desire More Personalized Recommendations&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="kpi-card bg-gradient-to-br from-yellow-50 to-yellow-100"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="text-5xl font-extrabold text-[#FBBC05]"&gt;5 sec&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="mt-2 font-semibold text-[#FBBC05]"&gt;Average Time to Capture User Interest&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="market-overview" class="fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold text-center mb-8"&gt;Market Overview: The App Discovery Gap&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-center text-gray-600 mb-8"&gt;Our analysis reveals a significant gap between the current state of app store search and evolving user expectations. The market is shifting from a simple catalog model to a dynamic, assistant-driven discovery engine.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="chart-container h-[45vh] md:h-[50vh]"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;canvas id="marketShareChart"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-center mt-4 text-sm text-gray-500"&gt;This chart illustrates the dominant methods users currently rely on for app discovery versus emerging, high-opportunity channels. While traditional search and charts still lead, AI-driven conversational search and proactive recommendations represent the future growth frontier.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="key-trends" class="fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold text-center mb-12"&gt;Key Trends Shaping the Future of Discovery&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-2xl shadow-lg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-xl font-bold mb-4 text-[#EA4335]"&gt;Trend 1: Conversational Search&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-600 mb-6" id="conversationalTrendText"&gt;Users are moving beyond rigid keywords. They expect to describe their needs in natural language and receive intelligent, synthesized answers. This shift from a search bar to a conversation is the most significant evolution in discovery.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="chart-container h-80"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;canvas id="conversationalAdoptionChart"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>&lt;p class="text-center mt-4 text-sm text-gray-500"&gt;Projected adoption rate of conversational search interfaces in digital marketplaces over the next three years, indicating a rapid user preference shift.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-2xl shadow-lg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-xl font-bold mb-4 text-[#FBBC05]"&gt;Trend 2: Hyper-Personalization&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-600 mb-6" id="personalizationTrendText"&gt;One-size-fits-all recommendations are failing. Platforms like Spotify and Netflix have set a new standard by learning deep user "taste profiles" to proactively suggest content, a model app stores are now expected to follow.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="chart-container h-80"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;canvas id="personalizationImpactChart"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-center mt-4 text-sm text-gray-500"&gt;Comparison of user engagement lift between generic, category-based recommendations and hyper-personalized, AI-driven suggestions.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="mt-12 text-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button id="summarizeTrendsBtn" class="bg-[#4285F4] hover:bg-[#3b7ae0] text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>✨ Summarize Key Trends</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="summaryOutput" class="ai-output-area mx-auto max-w-2xl mt-4 hidden"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="summaryLoading" class="loading-spinner mt-4 hidden"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="process-flow" class="fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold text-center mb-8"&gt;Value Chain: The Modern App Discovery Journey&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>&lt;p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto"&gt;The user journey has evolved from a linear search-and-install process to a cyclical, context-aware discovery loop powered by AI and community validation.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-8 rounded-2xl shadow-lg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flow-step border-[#4285F4]"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-lg text-[#4285F4]"&gt;1. Intent &amp; Context&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;The journey begins not with a keyword, but with a user's need, goal, or context (e.g., "planning a trip," "starting a new fitness routine," "feeling bored on a commute").&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flow-step border-[#EA4335]"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-lg text-[#EA4335]"&gt;2. Conversational Query&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;User engages with an AI assistant, expressing their need in natural language. "Find me a game I can play with my friend online that's not too competitive and has a fantasy theme."&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flow-step border-[#FBBC05]"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-lg text-[#FBBC05]"&gt;3. AI Synthesis &amp; Recommendation&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;The AI assistant synthesizes the request, cross-references it with user data, and presents a curated list of apps, often with AI-summarized reviews highlighting pros and cons.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flow-step border-[#34A853]"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-lg text-[#34A853]"&gt;4. Community Validation&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;User checks community-curated lists, deep user reviews, or sees that friends are also using a recommended app, building trust.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flow-step border-[#4285F4]"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-lg text-[#4285F4]"&gt;5. Installation &amp; Feedback Loop&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;User installs the app. Their subsequent usage, engagement, or uninstallation feeds back into the AI model, refining future recommendations for them and other users.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="swot" class="fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold text-center mb-8"&gt;SWOT Analysis: Google Play Store's Position&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto"&gt;Understanding the Play Store's current landscape is critical for identifying strategic pathways for integrating AI-powered discovery.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="swot-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="swot-card bg-green-50 text-green-800"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 class="font-bold text-xl mb-3 flex items-center"&gt;&lt;span&gt;&amp;#x1F4AA;&lt;/span&gt;&lt;span class="ml-2"&gt;Strengths&lt;/span&gt;&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-disc pl-5 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Unmatched scale with a massive app library and user base.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Deep integration with the broader Android and Google ecosystem.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Robust developer tools and a mature submission platform.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="swot-card bg-red-50 text-red-800"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 class="font-bold text-xl mb-3 flex items-center"&gt;&lt;span&gt;&amp;#x1F4A5;&lt;/span&gt;&lt;span class="ml-2"&gt;Weaknesses&lt;/span&gt;&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-disc pl-5 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Over-reliance on keyword search, which feels dated.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Discovery can feel overwhelming and generic to users.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Lack of deep community integration and qualitative insights.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="swot-card bg-blue-50 text-blue-800"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 class="font-bold text-xl mb-3 flex items-center"&gt;&lt;span&gt;&amp;#x1F680;&lt;/span&gt;&lt;span class="ml-2"&gt;Opportunities&lt;/span&gt;&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-disc pl-5 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Lead the market by creating a truly conversational AI "App Assistant."&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Leverage Google's AI prowess for hyper-personalization.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Integrate visual search and cross-device discovery.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="swot-card bg-yellow-50 text-yellow-800"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 class="font-bold text-xl mb-3 flex items-center"&gt;&lt;span&gt;&amp;#x26A0;&amp;#xFE0F;&lt;/span&gt;&lt;span class="ml-2"&gt;Threats&lt;/span&gt;&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-disc pl-5 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Competitors (Apple, gaming platforms) are improving curation.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;General AI search engines (Perplexity) are setting new user expectations for information retrieval.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;User fatigue with traditional app store Browse.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">             </span>&lt;section id="future-outlook" class="fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold text-center mb-8"&gt;Future Outlook: Strategic Imperatives&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-center text-gray-600 mb-8"&gt;To lead the next generation of app discovery, the Play Store must focus on key strategic areas powered by Generative AI. These imperatives represent critical development pathways to evolve beyond traditional search and create a more intelligent, user-centric platform.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-bold text-[#4285F4] mb-2"&gt;Conversational AI&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Transform the search bar into an intelligent assistant capable of understanding complex, natural language queries and engaging in multi-turn dialogues to pinpoint user needs for apps and games. This moves from keyword matching to genuine problem-solving.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-bold text-[#FBBC05] mb-2"&gt;Personalization&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Develop a sophisticated "app taste profile" using deeper behavioral data and AI to proactively recommend apps. This goes beyond simple download history, anticipating user needs and suggesting relevant content based on context, interests, and even mood.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-bold text-[#34A853] mb-2"&gt;Community Insights&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Leverage the power of user-generated content by using AI to synthesize and summarize app reviews, highlighting key pros/cons. Foster interactive community features like user-curated app lists and AI-moderated Q&amp;A forums to build trust and provide authentic validation.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-bold text-[#EA4335] mb-2"&gt;Visual Search&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Integrate "search what you see" capabilities, allowing users to find apps by uploading images of UI elements, game art styles, or real-world scenarios. This opens new discovery pathways for visually-driven users and those who lack precise terminology.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-bold text-[#4285F4] mb-2"&gt;Cross-Platform Discovery&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Enable seamless app discovery and synchronization across all Android devices, including phones, tablets, Chromebooks, Android TV, and Wear OS. The AI assistant should suggest apps that work cohesively across a user's entire device ecosystem.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div class="p-4" id="ethicalAITextContainer"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-bold text-[#34A853] mb-2"&gt;Ethical AI&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Prioritize fairness, transparency, and accountability in all AI-driven recommendations. This includes providing "explainable AI" to show why an app was suggested, mitigating biases in algorithms, and ensuring robust data privacy controls to build and maintain user trust.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="chart-container h-auto md:h-[55vh]"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;canvas id="radarChart"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-center mt-4 text-sm text-gray-500"&gt;This radar chart visualizes the key strategic areas for future investment. The ideal future state involves a balanced and high-scoring approach across all vectors, moving from a product catalog to an intelligent discovery partner.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mt-12 text-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button id="envisionFutureBtn" class="bg-[#EA4335] hover:bg-[#d03d2b] text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>✨ Envision Future Discovery</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div id="envisionFutureOutput" class="ai-output-area mx-auto max-w-2xl mt-4 hidden"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div id="envisionFutureLoading" class="loading-spinner mt-4 hidden"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="ask-ai-section" class="fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold text-center mb-8"&gt;Ask the AI about these Trends&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg max-w-2xl mx-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-center text-gray-600 mb-4"&gt;Have a question about the industry trends or strategic imperatives presented? Ask the AI!&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex flex-col sm:flex-row gap-4 mb-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="text" id="aiQuestionInput" class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4285F4]" placeholder="e.g., Explain more about Ethical AI..."&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button id="askAiBtn" class="bg-[#34A853] hover:bg-[#2c8a45] text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>✨ Ask AI</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="aiQuestionOutput" class="ai-output-area mt-4 hidden"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="aiQuestionLoading" class="loading-spinner mt-4 hidden"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="sources" class="fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold text-center mb-8"&gt;Sources &amp; Key Learnings&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg mx-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-center text-gray-600 mb-6"&gt;Our strategic insights are drawn from a comprehensive audit of leading digital platforms:&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="overflow-x-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;table class="sources-table"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;thead&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th&gt;Competitor&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th&gt;Key Learnings for Play Store&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/thead&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Apple App Store&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Human Curation: Value of trusted editorial voice and high-quality featuring.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Streamlined UX: Focus on clean presentation and premium feel.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Amazon (Marketplace)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Seamless Marketplace: Optimized purchase flow, extensive customer reviews/Q&amp;A for trust.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Advanced Recommendations: Predictive models based on deep Browse/purchase history.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Steam (Gaming)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Granular Tagging &amp; Metadata: Detailed, often user-generated, classification for precise search.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Community-Driven Discovery: Robust forums, curator systems, user guides.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Discovery Queue: Effective mechanism for personalized proactive suggestions.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;PlayStation/Xbox/Nintendo (Gaming)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Subscription Models: Discovery through bundled access (e.g., Game Pass).&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Console-Specific Features: Leveraging hardware capabilities for unique experiences.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Perplexity AI (GenAI Search)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Conversational Q&amp;A: Direct, synthesized answers to complex natural language queries.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Contextual Understanding: Ability to refine results through multi-turn dialogue.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Cited Sources: Transparency in information delivery.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Google Shopping (AI Mode)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;AI-Powered Synthesis: Summarizing info, guiding users through choices.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Shopping Intent: Understanding complex purchasing motivations.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Visual Try-On: Potential for interactive previews of digital goods.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Spotify / Netflix (Rec. Engines)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Taste Profile Mastery: Unparalleled ability to learn and anticipate individual content preferences.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Proactive Content Surfacing: Driving passive discovery through highly personalized feeds.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Goodreads (Community-Driven)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Authentic Community Insights: Rich qualitative depth from detailed reviews and discussions.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;User-Generated Lists: Curated collections from peers for niche discovery.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Pinterest (Visual Search)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Visual Inspiration &amp; Search: Powerful "search what you see" capabilities for aesthetics.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Aesthetic Matching: Finding content based on visual style and appeal.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;Product Hunt (New Discovery)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Innovation Spotlight: Highlighting new and emerging products.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Creator Connection: Direct engagement between users and developers.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;li&gt;Early Adopter Validation: Community-driven upvotes and feedback for new launches.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/table&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;footer class="text-center py-8 mt-12 border-t border-gray-200"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-500"&gt;Industry Trends &amp; Market Research | Analysis based on the Future of Search &amp; AI-Powered App Discovery Report.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-xs text-gray-400 mt-2"&gt;Data synthesized for illustrative purposes. No SVG or Mermaid JS were used in this production.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/footer&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const wrapLabel = (label, maxWidth) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const words = label.split(' ');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const lines = [];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let currentLine = '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for (const word of words) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if ((currentLine + word).length &gt; maxWidth &amp;&amp; currentLine.length &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>lines.push(currentLine);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>currentLine = word;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>currentLine += (currentLine.length === 0 ? '' : ' ') + word;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (currentLine.length &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>lines.push(currentLine);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return lines;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const defaultTooltipCallback = {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: function(tooltipItems) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const item = tooltipItems[0];</p>
-<p class="p1"><span class="Apple-converted-space">                </span>let label = item.chart.data.labels[item.dataIndex];</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (Array.isArray(label)) {</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>return label.join(' ');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return label;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const googleColors = {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>blue: '#4285F4',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>red: '#EA4335',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>yellow: '#FBBC05',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>green: '#34A853',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>darkGrey: '#3C4043',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>mediumGrey: '#70757A',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>lightGreyBg: '#F8F9FA'</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>Chart.defaults.font.family = "'Inter', sans-serif";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>Chart.defaults.color = googleColors.mediumGrey;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>new Chart(document.getElementById('marketShareChart'), {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'bar',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>data: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>labels: ['Keyword Search', 'Top Charts', wrapLabel('Curated Collections', 16), wrapLabel('Conversational AI Search', 16), wrapLabel('Proactive Recommendations', 16)],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>datasets: [{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>label: 'Current User Reliance (%)',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>data: [65, 55, 40, 15, 10],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>backgroundColor: [googleColors.blue, googleColors.green, googleColors.yellow, googleColors.red, googleColors.blue],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderColor: 'rgba(255, 255, 255, 0.8)',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderWidth: 2</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>options: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>responsive: true,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>maintainAspectRatio: false,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>indexAxis: 'y',</p>
-<p class="p1"><span class="Apple-converted-space">                </span>plugins: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>legend: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>display: false</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tooltip: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>callbacks: defaultTooltipCallback</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>scales: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>x: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>beginAtZero: true,</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>grid: {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>color: 'rgba(0, 0, 0, 0.05)'</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>y: {</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>grid: {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>display: false</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>new Chart(document.getElementById('conversationalAdoptionChart'), {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'line',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>data: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>labels: ['2024', '2025', '2026', '2027 (Proj.)'],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>datasets: [{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>label: 'Adoption Rate',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>data: [18, 35, 60, 85],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>fill: true,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>backgroundColor: 'rgba(234, 67, 53, 0.2)',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderColor: googleColors.red,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tension: 0.4</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>options: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>responsive: true,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>maintainAspectRatio: false,</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>plugins: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>legend: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>display: false</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tooltip: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>callbacks: defaultTooltipCallback</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>scales: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>y: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>beginAtZero: true,</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ticks: {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>callback: function(value) { return value + "%" }</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>new Chart(document.getElementById('personalizationImpactChart'), {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'doughnut',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>data: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>labels: ['Engagement Lift from Personalization', 'Baseline'],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>datasets: [{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>data: [65, 35],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>backgroundColor: [googleColors.yellow, '#e2e8f0'],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderColor: '#ffffff',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderWidth: 4</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>options: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>responsive: true,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>maintainAspectRatio: false,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>cutout: '70%',</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>plugins: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>legend: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>position: 'bottom'</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tooltip: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>callbacks: defaultTooltipCallback</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>new Chart(document.getElementById('radarChart'), {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'radar',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>data: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>labels: ['Conversational AI', 'Personalization', 'Community Insights', 'Visual Search', 'Cross-Platform', 'Ethical AI'].map(l =&gt; wrapLabel(l, 16)),</p>
-<p class="p1"><span class="Apple-converted-space">                </span>datasets: [{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>label: 'Current State',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>data: [3, 4, 3, 2, 5, 4],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>backgroundColor: 'rgba(52, 168, 83, 0.2)',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderColor: googleColors.green,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>pointBackgroundColor: googleColors.green,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}, {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>label: 'Strategic Goal',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>data: [9, 9, 8, 7, 8, 9],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>backgroundColor: 'rgba(66, 133, 244, 0.2)',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderColor: googleColors.blue,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>pointBackgroundColor: googleColors.blue,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>options: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>responsive: true,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>maintainAspectRatio: false,</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>plugins: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>legend: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>position: 'top',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tooltip: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>callbacks: defaultTooltipCallback</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>scales: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>r: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>beginAtZero: true,</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>max: 10,</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ticks: {</p>
-<p class="p1"><span class="Apple-converted-space">                           </span>display: false</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Gemini API integration</p>
-<p class="p1"><span class="Apple-converted-space">        </span>async function callGeminiAPI(prompt, outputElement, loadingElement) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>outputElement.classList.add('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>loadingElement.classList.remove('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>outputElement.innerHTML = ''; // Clear previous output</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>let chatHistory = [];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>chatHistory.push({ role: "user", parts: [{ text: prompt }] });</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const payload = { contents: chatHistory };</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const response = await fetch(apiUrl, {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>method: 'POST',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>headers: { 'Content-Type': 'application/json' },</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>body: JSON.stringify(payload)</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const result = await response.json();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (result.candidates &amp;&amp; result.candidates.length &gt; 0 &amp;&amp;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>result.candidates[0].content &amp;&amp; result.candidates[0].content.parts &amp;&amp;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>result.candidates[0].content.parts.length &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>let text = result.candidates[0].content.parts[0].text;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Convert markdown bold to HTML strong tags</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>text = text.replace(/\*\*(.*?)\*\*/g, '&lt;strong&gt;$1&lt;/strong&gt;');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>text = text.replace(/__(.*?)__/g, '&lt;strong&gt;$1&lt;/strong&gt;');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>outputElement.innerHTML = text;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>outputElement.innerHTML = 'Sorry, I could not generate a response. Please try again.';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>console.error('Error calling Gemini API:', error);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>outputElement.innerHTML = 'An error occurred while fetching the response. Please check your network connection or try again later.';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} finally {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>loadingElement.classList.add('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>outputElement.classList.remove('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Feature 1: Summarize Key Trends</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const summarizeTrendsBtn = document.getElementById('summarizeTrendsBtn');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const summaryOutput = document.getElementById('summaryOutput');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const summaryLoading = document.getElementById('summaryLoading');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const conversationalTrendText = document.getElementById('conversationalTrendText').innerText;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const personalizationTrendText = document.getElementById('personalizationTrendText').innerText;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>summarizeTrendsBtn.addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const prompt = `Please summarize the following two key trends in app discovery, highlighting their main points and significance for future development:\n\nTrend 1: ${conversationalTrendText}\n\nTrend 2: ${personalizationTrendText}`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>callGeminiAPI(prompt, summaryOutput, summaryLoading);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Feature 2: Envision Future Discovery</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const envisionFutureBtn = document.getElementById('envisionFutureBtn');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const envisionFutureOutput = document.getElementById('envisionFutureOutput');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const envisionFutureLoading = document.getElementById('envisionFutureLoading');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>envisionFutureBtn.addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const prompt = `Based on the concepts of conversational AI, hyper-personalization, visual search, and cross-platform discovery, envision a brief (3-4 sentences) scenario of how a user might discover a new app in 2030. Make it creative and engaging.`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>callGeminiAPI(prompt, envisionFutureOutput, envisionFutureLoading);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Feature 3: Ask About Trends (Q&amp;A)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const askAiBtn = document.getElementById('askAiBtn');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const aiQuestionInput = document.getElementById('aiQuestionInput');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const aiQuestionOutput = document.getElementById('aiQuestionOutput');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const aiQuestionLoading = document.getElementById('aiQuestionLoading');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>askAiBtn.addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const userQuestion = aiQuestionInput.value.trim();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (userQuestion) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const fullContext = `Here is information about app discovery trends and strategic imperatives:</p>
-<p class="p1"><span class="Apple-converted-space">                </span>- Conversational AI: Transform search bar to intelligent assistant understanding complex natural language queries and multi-turn dialogues for app discovery.</p>
-<p class="p1"><span class="Apple-converted-space">                </span>- Personalization: Develop sophisticated "app taste profile" using behavioral data and AI for proactive app recommendations.</p>
-<p class="p1"><span class="Apple-converted-space">                </span>- Community Insights: Leverage user-generated content, AI-summarized reviews, community lists, Q&amp;A forums.</p>
-<p class="p1"><span class="Apple-converted-space">                </span>- Visual Search: Integrate "search what you see" using images of UI elements, game art styles, or real-world scenarios to find apps.</p>
-<p class="p1"><span class="Apple-converted-space">                </span>- Cross-Platform Discovery: Enable seamless app discovery and synchronization across all Android devices (phones, tablets, Chromebooks, Android TV, Wear OS).</p>
-<p class="p1"><span class="Apple-converted-space">                </span>- Ethical AI: Prioritize fairness, transparency, and accountability in AI-driven recommendations, including explainable AI, bias mitigation, and data privacy.</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>Based on this information, please answer the following question: "${userQuestion}"`;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>callGeminiAPI(fullContext, aiQuestionOutput, aiQuestionLoading);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>aiQuestionOutput.classList.remove('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>aiQuestionOutput.innerHTML = 'Please enter a question.';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+<body class="bg-gray-50 text-gray-800">
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center py-8 md:py-12">
+            <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#EA4335] via-[#FBBC05] to-[#4285F4]">The Future of App Discovery</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">An Industry Analysis on Shifting from Keyword Search to Intelligent, Conversational, and AI-Powered Experiences</p>
+        </header>
+
+        <main class="space-y-16">
+            
+            <section id="introduction" class="fade-in">
+                <div class="text-center bg-white p-8 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">The Discovery Dilemma</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600 mb-6">The mobile app landscape is more saturated than ever. While the volume of apps provides immense choice, it creates a significant challenge for users: finding the right app for their specific, nuanced needs. Traditional keyword search is no longer sufficient.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="kpi-card bg-gradient-to-br from-blue-50 to-blue-100">
+                            <div class="text-5xl font-extrabold text-[#4285F4]">3.8M+</div>
+                            <div class="mt-2 font-semibold text-[#4285F4]">Apps on Google Play</div>
+                        </div>
+                        <div class="kpi-card bg-gradient-to-br from-red-50 to-red-100">
+                            <div class="text-5xl font-extrabold text-[#EA4335]">78%</div>
+                            <div class="mt-2 font-semibold text-[#EA4335]">Users Desire More Personalized Recommendations</div>
+                        </div>
+                        <div class="kpi-card bg-gradient-to-br from-yellow-50 to-yellow-100">
+                            <div class="text-5xl font-extrabold text-[#FBBC05]">5 sec</div>
+                            <div class="mt-2 font-semibold text-[#FBBC05]">Average Time to Capture User Interest</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="market-overview" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-8">Market Overview: The App Discovery Gap</h2>
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                    <p class="text-center text-gray-600 mb-8">Our analysis reveals a significant gap between the current state of app store search and evolving user expectations. The market is shifting from a simple catalog model to a dynamic, assistant-driven discovery engine.</p>
+                    <div class="chart-container h-[45vh] md:h-[50vh]">
+                        <canvas id="marketShareChart"></canvas>
+                    </div>
+                     <p class="text-center mt-4 text-sm text-gray-500">This chart illustrates the dominant methods users currently rely on for app discovery versus emerging, high-opportunity channels. While traditional search and charts still lead, AI-driven conversational search and proactive recommendations represent the future growth frontier.</p>
+                </div>
+            </section>
+
+            <section id="key-trends" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-12">Key Trends Shaping the Future of Discovery</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-[#EA4335]">Trend 1: Conversational Search</h3>
+                        <p class="text-gray-600 mb-6" id="conversationalTrendText">Users are moving beyond rigid keywords. They expect to describe their needs in natural language and receive intelligent, synthesized answers. This shift from a search bar to a conversation is the most significant evolution in discovery.</p>
+                        <div class="chart-container h-80">
+                            <canvas id="conversationalAdoptionChart"></canvas>
+                        </div>
+                         <p class="text-center mt-4 text-sm text-gray-500">Projected adoption rate of conversational search interfaces in digital marketplaces over the next three years, indicating a rapid user preference shift.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-[#FBBC05]">Trend 2: Hyper-Personalization</h3>
+                        <p class="text-gray-600 mb-6" id="personalizationTrendText">One-size-fits-all recommendations are failing. Platforms like Spotify and Netflix have set a new standard by learning deep user "taste profiles" to proactively suggest content, a model app stores are now expected to follow.</p>
+                        <div class="chart-container h-80">
+                            <canvas id="personalizationImpactChart"></canvas>
+                        </div>
+                        <p class="text-center mt-4 text-sm text-gray-500">Comparison of user engagement lift between generic, category-based recommendations and hyper-personalized, AI-driven suggestions.</p>
+                    </div>
+                </div>
+                <div class="mt-12 text-center">
+                    <button id="summarizeTrendsBtn" class="bg-[#4285F4] hover:bg-[#3b7ae0] text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                        ✨ Summarize Key Trends
+                    </button>
+                    <div id="summaryOutput" class="ai-output-area mx-auto max-w-2xl mt-4 hidden"></div>
+                    <div id="summaryLoading" class="loading-spinner mt-4 hidden"></div>
+                </div>
+            </section>
+            
+            <section id="process-flow" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-8">Value Chain: The Modern App Discovery Journey</h2>
+                 <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">The user journey has evolved from a linear search-and-install process to a cyclical, context-aware discovery loop powered by AI and community validation.</p>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="space-y-8">
+                        <div class="flow-step border-[#4285F4]">
+                            <h4 class="font-bold text-lg text-[#4285F4]">1. Intent & Context</h4>
+                            <p class="text-gray-600">The journey begins not with a keyword, but with a user's need, goal, or context (e.g., "planning a trip," "starting a new fitness routine," "feeling bored on a commute").</p>
+                        </div>
+                        <div class="flow-step border-[#EA4335]">
+                            <h4 class="font-bold text-lg text-[#EA4335]">2. Conversational Query</h4>
+                            <p class="text-gray-600">User engages with an AI assistant, expressing their need in natural language. "Find me a game I can play with my friend online that's not too competitive and has a fantasy theme."</p>
+                        </div>
+                        <div class="flow-step border-[#FBBC05]">
+                            <h4 class="font-bold text-lg text-[#FBBC05]">3. AI Synthesis & Recommendation</h4>
+                            <p class="text-gray-600">The AI assistant synthesizes the request, cross-references it with user data, and presents a curated list of apps, often with AI-summarized reviews highlighting pros and cons.</p>
+                        </div>
+                        <div class="flow-step border-[#34A853]">
+                            <h4 class="font-bold text-lg text-[#34A853]">4. Community Validation</h4>
+                            <p class="text-gray-600">User checks community-curated lists, deep user reviews, or sees that friends are also using a recommended app, building trust.</p>
+                        </div>
+                        <div class="flow-step border-[#4285F4]">
+                            <h4 class="font-bold text-lg text-[#4285F4]">5. Installation & Feedback Loop</h4>
+                            <p class="text-gray-600">User installs the app. Their subsequent usage, engagement, or uninstallation feeds back into the AI model, refining future recommendations for them and other users.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="swot" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-8">SWOT Analysis: Google Play Store's Position</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Understanding the Play Store's current landscape is critical for identifying strategic pathways for integrating AI-powered discovery.</p>
+                <div class="swot-grid">
+                    <div class="swot-card bg-green-50 text-green-800">
+                        <h4 class="font-bold text-xl mb-3 flex items-center"><span>&#x1F4AA;</span><span class="ml-2">Strengths</span></h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Unmatched scale with a massive app library and user base.</li>
+                            <li>Deep integration with the broader Android and Google ecosystem.</li>
+                            <li>Robust developer tools and a mature submission platform.</li>
+                        </ul>
+                    </div>
+                    <div class="swot-card bg-red-50 text-red-800">
+                        <h4 class="font-bold text-xl mb-3 flex items-center"><span>&#x1F4A5;</span><span class="ml-2">Weaknesses</span></h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Over-reliance on keyword search, which feels dated.</li>
+                            <li>Discovery can feel overwhelming and generic to users.</li>
+                            <li>Lack of deep community integration and qualitative insights.</li>
+                        </ul>
+                    </div>
+                    <div class="swot-card bg-blue-50 text-blue-800">
+                        <h4 class="font-bold text-xl mb-3 flex items-center"><span>&#x1F680;</span><span class="ml-2">Opportunities</span></h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Lead the market by creating a truly conversational AI "App Assistant."</li>
+                            <li>Leverage Google's AI prowess for hyper-personalization.</li>
+                            <li>Integrate visual search and cross-device discovery.</li>
+                        </ul>
+                    </div>
+                    <div class="swot-card bg-yellow-50 text-yellow-800">
+                        <h4 class="font-bold text-xl mb-3 flex items-center"><span>&#x26A0;&#xFE0F;</span><span class="ml-2">Threats</span></h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Competitors (Apple, gaming platforms) are improving curation.</li>
+                            <li>General AI search engines (Perplexity) are setting new user expectations for information retrieval.</li>
+                            <li>User fatigue with traditional app store Browse.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+             <section id="future-outlook" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-8">Future Outlook: Strategic Imperatives</h2>
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                     <p class="text-center text-gray-600 mb-8">To lead the next generation of app discovery, the Play Store must focus on key strategic areas powered by Generative AI. These imperatives represent critical development pathways to evolve beyond traditional search and create a more intelligent, user-centric platform.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-[#4285F4] mb-2">Conversational AI</h3>
+                            <p class="text-gray-600">Transform the search bar into an intelligent assistant capable of understanding complex, natural language queries and engaging in multi-turn dialogues to pinpoint user needs for apps and games. This moves from keyword matching to genuine problem-solving.</p>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-[#FBBC05] mb-2">Personalization</h3>
+                            <p class="text-gray-600">Develop a sophisticated "app taste profile" using deeper behavioral data and AI to proactively recommend apps. This goes beyond simple download history, anticipating user needs and suggesting relevant content based on context, interests, and even mood.</p>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-[#34A853] mb-2">Community Insights</h3>
+                            <p class="text-gray-600">Leverage the power of user-generated content by using AI to synthesize and summarize app reviews, highlighting key pros/cons. Foster interactive community features like user-curated app lists and AI-moderated Q&A forums to build trust and provide authentic validation.</p>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-[#EA4335] mb-2">Visual Search</h3>
+                            <p class="text-gray-600">Integrate "search what you see" capabilities, allowing users to find apps by uploading images of UI elements, game art styles, or real-world scenarios. This opens new discovery pathways for visually-driven users and those who lack precise terminology.</p>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-[#4285F4] mb-2">Cross-Platform Discovery</h3>
+                            <p class="text-gray-600">Enable seamless app discovery and synchronization across all Android devices, including phones, tablets, Chromebooks, Android TV, and Wear OS. The AI assistant should suggest apps that work cohesively across a user's entire device ecosystem.</p>
+                        </div>
+                         <div class="p-4" id="ethicalAITextContainer">
+                            <h3 class="text-xl font-bold text-[#34A853] mb-2">Ethical AI</h3>
+                            <p class="text-gray-600">Prioritize fairness, transparency, and accountability in all AI-driven recommendations. This includes providing "explainable AI" to show why an app was suggested, mitigating biases in algorithms, and ensuring robust data privacy controls to build and maintain user trust.</p>
+                        </div>
+                    </div>
+                    <div class="chart-container h-auto md:h-[55vh]">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    <p class="text-center mt-4 text-sm text-gray-500">This radar chart visualizes the key strategic areas for future investment. The ideal future state involves a balanced and high-scoring approach across all vectors, moving from a product catalog to an intelligent discovery partner.</p>
+                    <div class="mt-12 text-center">
+                        <button id="envisionFutureBtn" class="bg-[#EA4335] hover:bg-[#d03d2b] text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            ✨ Envision Future Discovery
+                        </button>
+                        <div id="envisionFutureOutput" class="ai-output-area mx-auto max-w-2xl mt-4 hidden"></div>
+                        <div id="envisionFutureLoading" class="loading-spinner mt-4 hidden"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ask-ai-section" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-8">Ask the AI about these Trends</h2>
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg max-w-2xl mx-auto">
+                    <p class="text-center text-gray-600 mb-4">Have a question about the industry trends or strategic imperatives presented? Ask the AI!</p>
+                    <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                        <input type="text" id="aiQuestionInput" class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4285F4]" placeholder="e.g., Explain more about Ethical AI...">
+                        <button id="askAiBtn" class="bg-[#34A853] hover:bg-[#2c8a45] text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            ✨ Ask AI
+                        </button>
+                    </div>
+                    <div id="aiQuestionOutput" class="ai-output-area mt-4 hidden"></div>
+                    <div id="aiQuestionLoading" class="loading-spinner mt-4 hidden"></div>
+                </div>
+            </section>
+
+            <section id="sources" class="fade-in">
+                <h2 class="text-3xl font-bold text-center mb-8">Sources & Key Learnings</h2>
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg mx-auto">
+                    <p class="text-center text-gray-600 mb-6">Our strategic insights are drawn from a comprehensive audit of leading digital platforms:</p>
+                    <div class="overflow-x-auto">
+                        <table class="sources-table">
+                            <thead>
+                                <tr>
+                                    <th>Competitor</th>
+                                    <th>Key Learnings for Play Store</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Apple App Store</td>
+                                    <td>
+                                        <ul>
+                                            <li>Human Curation: Value of trusted editorial voice and high-quality featuring.</li>
+                                            <li>Streamlined UX: Focus on clean presentation and premium feel.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Amazon (Marketplace)</td>
+                                    <td>
+                                        <ul>
+                                            <li>Seamless Marketplace: Optimized purchase flow, extensive customer reviews/Q&A for trust.</li>
+                                            <li>Advanced Recommendations: Predictive models based on deep Browse/purchase history.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Steam (Gaming)</td>
+                                    <td>
+                                        <ul>
+                                            <li>Granular Tagging & Metadata: Detailed, often user-generated, classification for precise search.</li>
+                                            <li>Community-Driven Discovery: Robust forums, curator systems, user guides.</li>
+                                            <li>Discovery Queue: Effective mechanism for personalized proactive suggestions.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PlayStation/Xbox/Nintendo (Gaming)</td>
+                                    <td>
+                                        <ul>
+                                            <li>Subscription Models: Discovery through bundled access (e.g., Game Pass).</li>
+                                            <li>Console-Specific Features: Leveraging hardware capabilities for unique experiences.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Perplexity AI (GenAI Search)</td>
+                                    <td>
+                                        <ul>
+                                            <li>Conversational Q&A: Direct, synthesized answers to complex natural language queries.</li>
+                                            <li>Contextual Understanding: Ability to refine results through multi-turn dialogue.</li>
+                                            <li>Cited Sources: Transparency in information delivery.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Google Shopping (AI Mode)</td>
+                                    <td>
+                                        <ul>
+                                            <li>AI-Powered Synthesis: Summarizing info, guiding users through choices.</li>
+                                            <li>Shopping Intent: Understanding complex purchasing motivations.</li>
+                                            <li>Visual Try-On: Potential for interactive previews of digital goods.</li>
+                                        </ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Spotify / Netflix (Rec. Engines)</td>
+                                    <td>
+                                        <ul>
+                                            <li>Taste Profile Mastery: Unparalleled ability to learn and anticipate individual content preferences.</li>
+                                            <li>Proactive Content Surfacing: Driving passive discovery through highly personalized feeds.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Goodreads (Community-Driven)</td>
+                                    <td>
+                                        <ul>
+                                            <li>Authentic Community Insights: Rich qualitative depth from detailed reviews and discussions.</li>
+                                            <li>User-Generated Lists: Curated collections from peers for niche discovery.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Pinterest (Visual Search)</td>
+                                    <td>
+                                        <ul>
+                                            <li>Visual Inspiration & Search: Powerful "search what you see" capabilities for aesthetics.</li>
+                                            <li>Aesthetic Matching: Finding content based on visual style and appeal.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Product Hunt (New Discovery)</td>
+                                    <td>
+                                        <ul>
+                                            <li>Innovation Spotlight: Highlighting new and emerging products.</li>
+                                            <li>Creator Connection: Direct engagement between users and developers.</li>
+                                            <li>Early Adopter Validation: Community-driven upvotes and feedback for new launches.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center py-8 mt-12 border-t border-gray-200">
+            <p class="text-gray-500">Industry Trends & Market Research | Analysis based on the Future of Search & AI-Powered App Discovery Report.</p>
+            <p class="text-xs text-gray-400 mt-2">Data synthesized for illustrative purposes. No SVG or Mermaid JS were used in this production.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label, maxWidth) => {
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine += (currentLine.length === 0 ? '' : ' ') + word;
+                }
+            }
+            if (currentLine.length > 0) {
+                lines.push(currentLine);
+            }
+            return lines;
+        };
+
+        const defaultTooltipCallback = {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                }
+                return label;
+            }
+        };
+
+        const googleColors = {
+            blue: '#4285F4',
+            red: '#EA4335',
+            yellow: '#FBBC05',
+            green: '#34A853',
+            darkGrey: '#3C4043',
+            mediumGrey: '#70757A',
+            lightGreyBg: '#F8F9FA'
+        };
+        
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = googleColors.mediumGrey;
+
+        new Chart(document.getElementById('marketShareChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Keyword Search', 'Top Charts', wrapLabel('Curated Collections', 16), wrapLabel('Conversational AI Search', 16), wrapLabel('Proactive Recommendations', 16)],
+                datasets: [{
+                    label: 'Current User Reliance (%)',
+                    data: [65, 55, 40, 15, 10],
+                    backgroundColor: [googleColors.blue, googleColors.green, googleColors.yellow, googleColors.red, googleColors.blue],
+                    borderColor: 'rgba(255, 255, 255, 0.8)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: defaultTooltipCallback
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    y: {
+                         grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('conversationalAdoptionChart'), {
+            type: 'line',
+            data: {
+                labels: ['2024', '2025', '2026', '2027 (Proj.)'],
+                datasets: [{
+                    label: 'Adoption Rate',
+                    data: [18, 35, 60, 85],
+                    fill: true,
+                    backgroundColor: 'rgba(234, 67, 53, 0.2)',
+                    borderColor: googleColors.red,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                 plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: defaultTooltipCallback
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return value + "%" }
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('personalizationImpactChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Engagement Lift from Personalization', 'Baseline'],
+                datasets: [{
+                    data: [65, 35],
+                    backgroundColor: [googleColors.yellow, '#e2e8f0'],
+                    borderColor: '#ffffff',
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                 plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: defaultTooltipCallback
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('radarChart'), {
+            type: 'radar',
+            data: {
+                labels: ['Conversational AI', 'Personalization', 'Community Insights', 'Visual Search', 'Cross-Platform', 'Ethical AI'].map(l => wrapLabel(l, 16)),
+                datasets: [{
+                    label: 'Current State',
+                    data: [3, 4, 3, 2, 5, 4],
+                    backgroundColor: 'rgba(52, 168, 83, 0.2)',
+                    borderColor: googleColors.green,
+                    pointBackgroundColor: googleColors.green,
+                }, {
+                    label: 'Strategic Goal',
+                    data: [9, 9, 8, 7, 8, 9],
+                    backgroundColor: 'rgba(66, 133, 244, 0.2)',
+                    borderColor: googleColors.blue,
+                    pointBackgroundColor: googleColors.blue,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                 plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: defaultTooltipCallback
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                           display: false
+                        }
+                    }
+                }
+            }
+        });
+
+
+        // Gemini API integration
+        async function callGeminiAPI(prompt, outputElement, loadingElement) {
+            outputElement.classList.add('hidden');
+            loadingElement.classList.remove('hidden');
+            outputElement.innerHTML = ''; // Clear previous output
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    let text = result.candidates[0].content.parts[0].text;
+                    // Convert markdown bold to HTML strong tags
+                    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
+                    outputElement.innerHTML = text;
+                } else {
+                    outputElement.innerHTML = 'Sorry, I could not generate a response. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                outputElement.innerHTML = 'An error occurred while fetching the response. Please check your network connection or try again later.';
+            } finally {
+                loadingElement.classList.add('hidden');
+                outputElement.classList.remove('hidden');
+            }
+        }
+
+        // Feature 1: Summarize Key Trends
+        const summarizeTrendsBtn = document.getElementById('summarizeTrendsBtn');
+        const summaryOutput = document.getElementById('summaryOutput');
+        const summaryLoading = document.getElementById('summaryLoading');
+        const conversationalTrendText = document.getElementById('conversationalTrendText').innerText;
+        const personalizationTrendText = document.getElementById('personalizationTrendText').innerText;
+
+        summarizeTrendsBtn.addEventListener('click', () => {
+            const prompt = `Please summarize the following two key trends in app discovery, highlighting their main points and significance for future development:\n\nTrend 1: ${conversationalTrendText}\n\nTrend 2: ${personalizationTrendText}`;
+            callGeminiAPI(prompt, summaryOutput, summaryLoading);
+        });
+
+        // Feature 2: Envision Future Discovery
+        const envisionFutureBtn = document.getElementById('envisionFutureBtn');
+        const envisionFutureOutput = document.getElementById('envisionFutureOutput');
+        const envisionFutureLoading = document.getElementById('envisionFutureLoading');
+
+        envisionFutureBtn.addEventListener('click', () => {
+            const prompt = `Based on the concepts of conversational AI, hyper-personalization, visual search, and cross-platform discovery, envision a brief (3-4 sentences) scenario of how a user might discover a new app in 2030. Make it creative and engaging.`;
+            callGeminiAPI(prompt, envisionFutureOutput, envisionFutureLoading);
+        });
+
+        // Feature 3: Ask About Trends (Q&A)
+        const askAiBtn = document.getElementById('askAiBtn');
+        const aiQuestionInput = document.getElementById('aiQuestionInput');
+        const aiQuestionOutput = document.getElementById('aiQuestionOutput');
+        const aiQuestionLoading = document.getElementById('aiQuestionLoading');
+
+        askAiBtn.addEventListener('click', () => {
+            const userQuestion = aiQuestionInput.value.trim();
+            if (userQuestion) {
+                const fullContext = `Here is information about app discovery trends and strategic imperatives:
+                - Conversational AI: Transform search bar to intelligent assistant understanding complex natural language queries and multi-turn dialogues for app discovery.
+                - Personalization: Develop sophisticated "app taste profile" using behavioral data and AI for proactive app recommendations.
+                - Community Insights: Leverage user-generated content, AI-summarized reviews, community lists, Q&A forums.
+                - Visual Search: Integrate "search what you see" using images of UI elements, game art styles, or real-world scenarios to find apps.
+                - Cross-Platform Discovery: Enable seamless app discovery and synchronization across all Android devices (phones, tablets, Chromebooks, Android TV, Wear OS).
+                - Ethical AI: Prioritize fairness, transparency, and accountability in AI-driven recommendations, including explainable AI, bias mitigation, and data privacy.
+
+                Based on this information, please answer the following question: "${userQuestion}"`;
+                
+                callGeminiAPI(fullContext, aiQuestionOutput, aiQuestionLoading);
+            } else {
+                aiQuestionOutput.classList.remove('hidden');
+                aiQuestionOutput.innerHTML = 'Please enter a question.';
+            }
+        });
+    </script>
 </body>
 </html>
